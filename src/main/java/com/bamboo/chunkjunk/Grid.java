@@ -272,6 +272,13 @@ public class Grid
             chunkRetriever.add(chunk);
         }
 
+        if(chunkOvershoot == 0)
+        {
+            for(int i = 0; i < chunks.size; i ++)
+                chunks.get(i).touched = false;
+            return chunkRetriever;
+        }
+
         float cellX = MathUtils.ceil(x / chunkSize);
         float cellY = MathUtils.ceil(y / chunkSize);
         float chunkX = (cellX * chunkSize) - halfChunkSize;
@@ -303,6 +310,13 @@ public class Grid
                     chunkRetriever.add(chunk);
                 }
             }
+        }
+
+        if(chunkOvershoot == 0)
+        {
+            for(int i = 0; i < chunks.size; i ++)
+                chunks.get(i).touched = false;
+            return chunkRetriever;
         }
 
         for(int i = 0; i < chunkRetriever.size; i ++)
@@ -346,14 +360,14 @@ public class Grid
     /** Checks the bounds of all neighboring chunks and adds them to chunkRetriever if collision is made. */
     private void retrieveNeighborChunks(Chunk chunk, float[] vertices)
     {
-        retrieveNeighborChunk(chunk.x - 1, chunk.y, vertices);
-        retrieveNeighborChunk(chunk.x - 1, chunk.y + 1, vertices);
-        retrieveNeighborChunk(chunk.x, chunk.y + 1, vertices);
-        retrieveNeighborChunk(chunk.x + 1, chunk.y + 1, vertices);
-        retrieveNeighborChunk(chunk.x + 1, chunk.y, vertices);
-        retrieveNeighborChunk(chunk.x + 1, chunk.y - 1, vertices);
-        retrieveNeighborChunk(chunk.x, chunk.y - 1, vertices);
-        retrieveNeighborChunk(chunk.x - 1, chunk.y - 1, vertices);
+        retrieveNeighborChunk(chunk.x - chunkSize, chunk.y, vertices);
+        retrieveNeighborChunk(chunk.x - chunkSize, chunk.y + chunkSize, vertices);
+        retrieveNeighborChunk(chunk.x, chunk.y + chunkSize, vertices);
+        retrieveNeighborChunk(chunk.x + chunkSize, chunk.y + chunkSize, vertices);
+        retrieveNeighborChunk(chunk.x + chunkSize, chunk.y, vertices);
+        retrieveNeighborChunk(chunk.x + chunkSize, chunk.y - chunkSize, vertices);
+        retrieveNeighborChunk(chunk.x, chunk.y - chunkSize, vertices);
+        retrieveNeighborChunk(chunk.x - chunkSize, chunk.y - chunkSize, vertices);
     }
 
     /** Does not use spatial hashing. Does collision check to account for overshoot. */
