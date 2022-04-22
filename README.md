@@ -14,7 +14,22 @@ If for whatever reason a quad tree datastructure doesn't suit your needs, feel f
 
 # Installation #
 
-TODO
+Add this in your root build.gradle at the end of repositories:
+
+`	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}`
+ 
+Then add the dependency
+
+`dependencies {
+	        implementation 'com.github.BambooBandit:ChunkJunk:6884772eb6'
+}`
+
+Now you should be good to go.
 
 
 # Usage #
@@ -41,3 +56,13 @@ And that's pretty much it!
 # Performance #
 
 Since the chunks are indexed, you can quickly access a chunk with a point in O(1) time complexity. Querying with a polygon or with overshoots (overlapping chunks) aren't as fast because once necessary chunks are accessed, neighboring chunks have their bounds checked.
+
+# Demo #
+
+Included in this repo is a libGDX graphical demo of this library.
+Controls:
+* Left mouse click to add new point to grid
+* Right mouse click to plot polygon points. Enter to finish polygon and add it to grid.
+* Arrow keys to move camera.
+* Comma and Period to zoom in and out.
+* R to reset the grid.
