@@ -323,10 +323,6 @@ public class Grid
     /** Checks the bounds of all neighboring chunks and adds them to chunkRetriever if collision is made. */
     private void retrieveNeighborChunks(float chunkX, float chunkY, float x, float y)
     {
-        if(Gdx.input.isKeyPressed(Input.Keys.L))
-        {
-            System.out.println("check " + chunkX + ", " + chunkY);
-        }
         retrieveNeighborChunk(chunkX, chunkY, x, y);
         retrieveNeighborChunk(chunkX - chunkSize, chunkY, x, y);
         retrieveNeighborChunk(chunkX - chunkSize, chunkY + chunkSize, x, y);
@@ -342,12 +338,8 @@ public class Grid
     private void retrieveNeighborChunk(float chunkX, float chunkY, float x, float y)
     {
         Chunk chunk = getChunk(chunkX, chunkY);
-        if(Gdx.input.isKeyPressed(Input.Keys.L))
-            System.out.println("test " + chunkX + ", " + chunkY + " = " + chunk);
         if(chunk != null)
         {
-//            if(Gdx.input.isKeyPressed(Input.Keys.L))
-//                System.out.println(chunk.x + ", " + chunk.y + "... " + chunk);
             if(!chunk.touched && chunk.contains(x, y))
                 chunkRetriever.add(chunk);
             chunk.touched = true;
