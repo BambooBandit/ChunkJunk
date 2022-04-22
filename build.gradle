@@ -22,14 +22,11 @@ buildscript {
 apply plugin: 'java-library'
 apply plugin: 'com.vanniktech.maven.publish'
 
-// You may want to change this to 1.8 .
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 
-//Obviously, change the next line to match your project name.
-def projectName = 'libgdx-library-template'
+def projectName = 'ChunkJunk'
 
-//Change this to whatever Maven Central group you might publish to, which is probably not this one if you aren't Tommy Ettinger.
-group 'com.github.tommyettinger'
+group 'com.bamboo.chunkjunk'
 
 version "$VERSION_NAME"
 
@@ -50,9 +47,7 @@ if (JavaVersion.current().isJava8Compatible()) {
 if(JavaVersion.current().isJava9Compatible()) {
     allprojects {
         tasks.withType(JavaCompile) {
-            options.release.set(7) // You can change this from 7 to 8 if you don't support iOS.
-			                       // Using 7 triggers deprecation warnings on newer JDKs, but RoboVM needs it.
-			                       // However, LWJGL3 needs Java 8 starting in 1.10.1-SNAPSHOT, so...
+            options.release.set(8)
         }
     }
 }
