@@ -14,7 +14,22 @@ If for whatever reason a quad tree datastructure doesn't suit your needs, feel f
 
 # Installation #
 
-TODO
+Add this in your root build.gradle at the end of repositories:
+
+`	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}`
+ 
+Then add the dependency
+
+`dependencies {
+	        implementation 'com.github.BambooBandit:ChunkJunk:6884772eb6'
+}`
+
+Now you should be good to go.
 
 
 # Usage #
