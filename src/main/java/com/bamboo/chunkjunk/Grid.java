@@ -1,5 +1,7 @@
 package com.bamboo.chunkjunk;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -78,18 +80,10 @@ public class Grid
     private Array<Chunk> createChunks(float x, float y)
     {
         chunkRetriever.clear();
-        float cellX = x / chunkSize;
-        float cellY = y / chunkSize;
-        if(cellX >= 0)
-            cellX = MathUtils.ceil(x / chunkSize);
-        else
-            cellX = MathUtils.floor(x / chunkSize);
-        if(cellY >= 0)
-            cellY = MathUtils.ceil(y / chunkSize);
-        else
-            cellY = MathUtils.floor(y / chunkSize);
-        float chunkX = (cellX * chunkSize);
-        float chunkY = (cellY * chunkSize);
+        float cellX = MathUtils.ceil(x / chunkSize);
+        float cellY = MathUtils.ceil(y / chunkSize);
+        float chunkX = (cellX * chunkSize) - halfChunkSize;
+        float chunkY = (cellY * chunkSize) - halfChunkSize;
 
         if(chunks.size == 0)
         {
@@ -111,12 +105,13 @@ public class Grid
         if(x < leftX) // resize leftward
         {
             int index = 0;
-            int newColumns = (int) ((leftX - chunkX) / chunkSize);
+            int newColumns = MathUtils.ceil((leftX - chunkX) / chunkSize);
             int newColumnCount = columnCount + newColumns;
             int yIncrement = 0;
+
             for(float newChunkY = bottomY + halfChunkSize; newChunkY < (rowCount * chunkSize) + bottomY; newChunkY += chunkSize)
             {
-                for(float newChunkX = chunkX + halfChunkSize; newChunkX < leftX; newChunkX += chunkSize)
+                for(float newChunkX = chunkX; newChunkX < leftX + halfChunkSize; newChunkX += chunkSize)
                 {
                     Chunk chunk = new Chunk(newChunkX, newChunkY, this);
                     chunkRetriever.add(chunk);
@@ -131,12 +126,12 @@ public class Grid
         else if(x > rightX) // resize rightward
         {
             int index = columnCount;
-            int newColumns = (int) ((chunkX - rightX) / chunkSize);
+            int newColumns = MathUtils.ceil(((chunkX - rightX) / chunkSize));
             int newColumnCount = columnCount + newColumns;
             int yIncrement = 0;
             for(float newChunkY = bottomY + halfChunkSize; newChunkY < (rowCount * chunkSize) + bottomY; newChunkY += chunkSize)
             {
-                for(float newChunkX = rightX + halfChunkSize; newChunkX < chunkX; newChunkX += chunkSize)
+                for(float newChunkX = rightX + halfChunkSize; newChunkX < chunkX + halfChunkSize; newChunkX += chunkSize)
                 {
                     Chunk chunk = new Chunk(newChunkX, newChunkY, this);
                     chunkRetriever.add(chunk);
@@ -158,10 +153,10 @@ public class Grid
         if(y < bottomY) // resize downward
         {
             int index = 0;
-            int newRows = (int) ((bottomY - chunkY) / chunkSize);
+            int newRows = MathUtils.ceil(((bottomY - chunkY) / chunkSize));
             int newRowCount = rowCount + newRows;
             int yIncrement = 0;
-            for(float newChunkY = chunkY + halfChunkSize; newChunkY < bottomY; newChunkY += chunkSize)
+            for(float newChunkY = chunkY; newChunkY < bottomY + halfChunkSize; newChunkY += chunkSize)
             {
                 for(float newChunkX = leftX + halfChunkSize; newChunkX < (columnCount * chunkSize) + leftX; newChunkX += chunkSize)
                 {
@@ -178,10 +173,10 @@ public class Grid
         else if(y > topY) // resize upward
         {
             int index = columnCount * rowCount;
-            int newRows = (int) ((chunkY - topY) / chunkSize);
+            int newRows = MathUtils.ceil(((chunkY - topY) / chunkSize));
             int newRowCount = rowCount + newRows;
             int yIncrement = 0;
-            for(float newChunkY = topY + halfChunkSize; newChunkY < chunkY; newChunkY += chunkSize)
+            for(float newChunkY = topY + halfChunkSize; newChunkY < chunkY + halfChunkSize; newChunkY += chunkSize)
             {
                 for(float newChunkX = leftX + halfChunkSize; newChunkX < (columnCount * chunkSize) + leftX; newChunkX += chunkSize)
                 {
@@ -249,12 +244,15 @@ public class Grid
         float leftX = firstChunk.x - halfChunkSize;
         float bottomY = firstChunk.y - halfChunkSize;
 
-        if(x < firstChunk.x - halfChunkSize || y < firstChunk.y - halfChunkSize || x > (columnCount * chunkSize) + leftX || y > (rowCount * chunkSize) + bottomY)
+        boolean outsideOfGrid = x < firstChunk.x - halfChunkSize - halfChunkOvershoot || y < firstChunk.y - halfChunkSize - halfChunkOvershoot || x > (columnCount * chunkSize) + leftX + halfChunkOvershoot || y > (rowCount * chunkSize) + bottomY + halfChunkOvershoot;
+        if(outsideOfGrid)
             return null;
+
+        x = MathUtils.clamp(x, firstChunk.x - halfChunkSize, ((columnCount * chunkSize) + leftX) - .001f);
+        y = MathUtils.clamp(y, firstChunk.y - halfChunkSize, ((rowCount * chunkSize) + bottomY) - .001f);
 
         x -= leftX;
         y -= bottomY;
-
 
         int index = (int) ((int)(y / chunkSize) * columnCount + (x / chunkSize));
 
@@ -277,8 +275,10 @@ public class Grid
             chunkRetriever.add(chunk);
         }
 
-        float chunkX = (MathUtils.ceil(x / chunkSize) * chunkSize);
-        float chunkY = (MathUtils.ceil(y / chunkSize) * chunkSize);
+        float cellX = MathUtils.ceil(x / chunkSize);
+        float cellY = MathUtils.ceil(y / chunkSize);
+        float chunkX = (cellX * chunkSize) - halfChunkSize;
+        float chunkY = (cellY * chunkSize) - halfChunkSize;
 
         retrieveNeighborChunks(chunkX, chunkY, x, y);
 
@@ -323,22 +323,31 @@ public class Grid
     /** Checks the bounds of all neighboring chunks and adds them to chunkRetriever if collision is made. */
     private void retrieveNeighborChunks(float chunkX, float chunkY, float x, float y)
     {
-        retrieveNeighborChunk(chunkX - 1, chunkY, x, y);
-        retrieveNeighborChunk(chunkX - 1, chunkY + 1, x, y);
-        retrieveNeighborChunk(chunkX, chunkY + 1, x, y);
-        retrieveNeighborChunk(chunkX + 1, chunkY + 1, x, y);
-        retrieveNeighborChunk(chunkX + 1, chunkY, x, y);
-        retrieveNeighborChunk(chunkX + 1, chunkY - 1, x, y);
-        retrieveNeighborChunk(chunkX, chunkY - 1, x, y);
-        retrieveNeighborChunk(chunkX - 1, chunkY - 1, x, y);
+        if(Gdx.input.isKeyPressed(Input.Keys.L))
+        {
+            System.out.println("check " + chunkX + ", " + chunkY);
+        }
+        retrieveNeighborChunk(chunkX, chunkY, x, y);
+        retrieveNeighborChunk(chunkX - chunkSize, chunkY, x, y);
+        retrieveNeighborChunk(chunkX - chunkSize, chunkY + chunkSize, x, y);
+        retrieveNeighborChunk(chunkX, chunkY + chunkSize, x, y);
+        retrieveNeighborChunk(chunkX + chunkSize, chunkY + chunkSize, x, y);
+        retrieveNeighborChunk(chunkX + chunkSize, chunkY, x, y);
+        retrieveNeighborChunk(chunkX + chunkSize, chunkY - chunkSize, x, y);
+        retrieveNeighborChunk(chunkX, chunkY - chunkSize, x, y);
+        retrieveNeighborChunk(chunkX - chunkSize, chunkY - chunkSize, x, y);
     }
 
     /** Does not use spatial hashing. Does collision check to account for overshoot. */
     private void retrieveNeighborChunk(float chunkX, float chunkY, float x, float y)
     {
         Chunk chunk = getChunk(chunkX, chunkY);
+        if(Gdx.input.isKeyPressed(Input.Keys.L))
+            System.out.println("test " + chunkX + ", " + chunkY + " = " + chunk);
         if(chunk != null)
         {
+//            if(Gdx.input.isKeyPressed(Input.Keys.L))
+//                System.out.println(chunk.x + ", " + chunk.y + "... " + chunk);
             if(!chunk.touched && chunk.contains(x, y))
                 chunkRetriever.add(chunk);
             chunk.touched = true;
@@ -368,5 +377,12 @@ public class Grid
                 chunkRetriever.add(chunk);
             chunk.touched = true;
         }
+    }
+
+    public void reset()
+    {
+        this.columnCount = 0;
+        this.rowCount = 0;
+        this.chunks.clear();
     }
 }

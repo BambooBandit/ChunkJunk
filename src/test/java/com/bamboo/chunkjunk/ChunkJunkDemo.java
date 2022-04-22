@@ -60,6 +60,12 @@ public class ChunkJunkDemo extends ApplicationAdapter
 			verts.add(unprojector.x, unprojector.y);
 		}
 
+		if(Gdx.input.isKeyJustPressed(Input.Keys.R))
+		{
+			grid.reset();
+			junk.clear();
+		}
+
 		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
 		{
 			if(verts.size >= 6)
