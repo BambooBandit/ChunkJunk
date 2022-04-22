@@ -12,6 +12,11 @@ If for whatever reason a quad tree datastructure doesn't suit your needs, feel f
 * Option to add overshoots to the chunks if you want them to overlap over each other.
 
 
+# Installation #
+
+TODO
+
+
 # Usage #
 
 Make a Grid with initial column, row count (can both be 0 if you want to start with 0 chunks), chunk size, and optionally, overshoot (to allow chunks to overlap)
