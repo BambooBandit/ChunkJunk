@@ -8,7 +8,7 @@ If for whatever reason a quad tree datastructure doesn't suit your needs, feel f
 
 * Create a Grid of Chunks that hold whatever Object you want.
 * Grid automatically resizes by creating new chunks to encompass any new Object you add to the Grid that is positioned outside of the Grid.
-* Query the grid with a point or polygon to recieve chunks in that region.
+* Query the grid with a point or polygon to receive chunks in that region.
 * Option to add overshoots to the chunks if you want them to overlap over each other.
 
 
