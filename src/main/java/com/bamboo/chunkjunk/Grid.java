@@ -56,15 +56,18 @@ public class Grid
     {
         Array<Chunk> chunks = getChunks(x, y);
         if(chunks.size == 0)
-            chunks = createChunks(x, y);
+        {
+            createChunks(x, y);
+            chunks = getChunks(x, y);
+        }
         add(chunks, object);
     }
 
     /** Add an object to the grid. Will create chunks if none were found in the location. */
     public void add(float[] vertices, Object object)
     {
-        createChunks(vertices);
         Array<Chunk> chunks = getChunks(vertices);
+        createChunks(vertices);
         add(chunks, object);
     }
 
@@ -77,9 +80,8 @@ public class Grid
         }
     }
 
-    private Array<Chunk> createChunks(float x, float y)
+    private void createChunks(float x, float y)
     {
-        chunkRetriever.clear();
         float cellX = MathUtils.ceil(x / chunkSize);
         float cellY = MathUtils.ceil(y / chunkSize);
         float chunkX = (cellX * chunkSize) - halfChunkSize;
@@ -89,10 +91,9 @@ public class Grid
         {
             Chunk chunk = new Chunk(chunkX, chunkY, this);
             chunks.add(chunk);
-            chunkRetriever.add(chunk);
             this.columnCount = 1;
             this.rowCount = 1;
-            return chunkRetriever;
+            return;
         }
 
         Chunk firstChunk = chunks.get(0);
@@ -114,7 +115,6 @@ public class Grid
                 for(float newChunkX = chunkX; newChunkX < leftX + halfChunkSize; newChunkX += chunkSize)
                 {
                     Chunk chunk = new Chunk(newChunkX, newChunkY, this);
-                    chunkRetriever.add(chunk);
                     chunks.insert(index, chunk);
                     index ++;
                 }
@@ -134,7 +134,6 @@ public class Grid
                 for(float newChunkX = rightX + halfChunkSize; newChunkX < chunkX + halfChunkSize; newChunkX += chunkSize)
                 {
                     Chunk chunk = new Chunk(newChunkX, newChunkY, this);
-                    chunkRetriever.add(chunk);
                     chunks.insert(index, chunk);
                     index ++;
                 }
@@ -161,7 +160,6 @@ public class Grid
                 for(float newChunkX = leftX + halfChunkSize; newChunkX < (columnCount * chunkSize) + leftX; newChunkX += chunkSize)
                 {
                     Chunk chunk = new Chunk(newChunkX, newChunkY, this);
-                    chunkRetriever.add(chunk);
                     chunks.insert(index, chunk);
                     index ++;
                 }
@@ -181,7 +179,6 @@ public class Grid
                 for(float newChunkX = leftX + halfChunkSize; newChunkX < (columnCount * chunkSize) + leftX; newChunkX += chunkSize)
                 {
                     Chunk chunk = new Chunk(newChunkX, newChunkY, this);
-                    chunkRetriever.add(chunk);
                     chunks.insert(index, chunk);
                     index ++;
                 }
@@ -190,7 +187,7 @@ public class Grid
             }
             rowCount = newRowCount;
         }
-        return chunkRetriever;
+        return;
     }
 
     private void createChunks(float[] vertices)
@@ -295,9 +292,9 @@ public class Grid
 
         polygon.setVertices(vertices);
         Rectangle rectangle = polygon.getBoundingRectangle();
-        for(float x = rectangle.x; x < rectangle.x + rectangle.width; x += chunkSize)
+        for(float x = rectangle.x; x < rectangle.x + rectangle.width + halfChunkSize; x += chunkSize)
         {
-            for(float y = rectangle.y; y < rectangle.y + rectangle.height; y += chunkSize)
+            for(float y = rectangle.y; y < rectangle.y + rectangle.height + halfChunkSize; y += chunkSize)
             {
                 Chunk chunk = getChunk(x, y);
                 if(chunk != null && chunk.contains(vertices))

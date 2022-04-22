@@ -108,7 +108,7 @@ public class ChunkJunkDemo extends ApplicationAdapter
 			shapeRenderer.rect(chunk.x - grid.halfChunkSize - grid.halfChunkOvershoot, chunk.y - grid.halfChunkSize - grid.halfChunkOvershoot, grid.chunkSize + grid.chunkOvershoot, grid.chunkSize + grid.chunkOvershoot);
 		}
 
-		shapeRenderer.setColor(0, 1, 0, 1f);
+		shapeRenderer.setColor(0, .3f, 0, 1f);
 		shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
 		Array<Chunk> chunks = grid.getChunks(unprojector.x, unprojector.y);
 		for(int i = 0; i < chunks.size; i ++)
@@ -147,7 +147,7 @@ public class ChunkJunkDemo extends ApplicationAdapter
 
 		chunks = null;
 
-		shapeRenderer.setColor(Color.YELLOW);
+		shapeRenderer.setColor(.5f, .5f, 0, 1);
 		for(int i = 0; i < junk.size; i ++)
 		{
 			Object object = junk.get(i);
@@ -186,6 +186,34 @@ public class ChunkJunkDemo extends ApplicationAdapter
 							JunkPolygon junkPolygon = (JunkPolygon) object;
 							shapeRenderer.polygon(junkPolygon.vertices);
 						}
+					}
+				}
+			}
+		}
+
+		shapeRenderer.setColor(Color.YELLOW);
+		chunks = grid.getChunks(unprojector.x, unprojector.y);
+		if(chunks != null)
+		{
+			// Get objects from chunks
+			for(int k = 0; k < chunks.size; k ++)
+			{
+				Chunk chunk = chunks.get(k);
+				ObjectSet objects = chunk.getObjects();
+				ObjectSet.ObjectSetIterator iterator = objects.iterator();
+				while(iterator.hasNext)
+				{
+					Object object = iterator.next();
+					if(object instanceof JunkPoint)
+					{
+						JunkPoint junkPoint = (JunkPoint) object;
+						shapeRenderer.circle(junkPoint.x, junkPoint.y, 5);
+					}
+					// Get chunks from polygon
+					else if(object instanceof JunkPolygon)
+					{
+						JunkPolygon junkPolygon = (JunkPolygon) object;
+						shapeRenderer.polygon(junkPolygon.vertices);
 					}
 				}
 			}
