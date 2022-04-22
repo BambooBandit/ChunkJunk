@@ -13,6 +13,16 @@ import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+/**
+ * Controls:
+ *
+ * Left mouse click to add new point to grid
+ * Right mouse click to plot polygon points. Enter to finish polygon and add it to grid.
+ * Arrow keys to move camera.
+ * Comma and Period to zoom in and out.
+ * R to reset the grid.
+ *
+ * */
 public class ChunkJunkDemo extends ApplicationAdapter
 {
 	ShapeRenderer shapeRenderer;
