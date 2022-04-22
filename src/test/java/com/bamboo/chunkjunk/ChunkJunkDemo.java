@@ -29,12 +29,15 @@ public class ChunkJunkDemo extends ApplicationAdapter
 		shapeRenderer.setAutoShapeType(true);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera.update();
 		unprojector = new Vector3();
 		verts = new FloatArray();
 		junk = new Array<>();
 
 		grid = new Grid(3, 3, 100);
+
+		camera.position.x -= (camera.viewportWidth / 2f) - (grid.columnCount * grid.chunkSize) / 2f;
+		camera.position.y -= (camera.viewportHeight / 2f) - (grid.rowCount * grid.chunkSize) / 2f;
+		camera.update();
 	}
 
 	@Override
