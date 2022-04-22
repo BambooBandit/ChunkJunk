@@ -14,8 +14,9 @@ If for whatever reason a quad tree datastructure doesn't suit your needs, feel f
 
 # Usage #
 
-Todo
-
+Make a Grid with initial column, row count (can both be 0 if you want to start with 0 chunks), chunk size, and optionally, overshoot (to allow chunks to overlap)
+`grid = new Grid(columns, rows, chunkSize, chunkOvershoot);`
+TODO
 
 # Performance #
 
