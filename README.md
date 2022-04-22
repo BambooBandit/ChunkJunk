@@ -15,8 +15,21 @@ If for whatever reason a quad tree datastructure doesn't suit your needs, feel f
 # Usage #
 
 Make a Grid with initial column, row count (can both be 0 if you want to start with 0 chunks), chunk size, and optionally, overshoot (to allow chunks to overlap)
-`grid = new Grid(columns, rows, chunkSize, chunkOvershoot);`
-TODO
+
+`Grid grid = new Grid(columns, rows, chunkSize, chunkOvershoot);`
+
+Now you can add whatever objects you want to the grid by giving it either a point or a polygon, and the grid will add them to the appropriate chunks, or create new chunks if necessary.
+
+`grid.add(x, y, object);`
+`grid.add(new float[]{0,0, 1, 1, 1, 0}, object);`
+
+And query the grid for the chunks by giving it either a point or polygon. Keep in mind that grid.getChunks returns a reusable array to prevent garbage creation, so work with it as soon as you call it and don't hold on to it.
+
+`Array<Chunk> chunks = grid.getChunks(x, y);`
+`Array<Chunk> chunks = grid.getChunks(new float[]{0,0, 1, 1, 1, 0});`
+
+And that's pretty much it!
+
 
 # Performance #
 
