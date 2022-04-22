@@ -47,6 +47,7 @@ public class Grid
         }
     }
 
+    /** Add an object to the grid. Will create chunks if none were found in the location. */
     public void add(float x, float y, Object object)
     {
         Array<Chunk> chunks = getChunks(x, y);
@@ -55,6 +56,7 @@ public class Grid
         add(chunks, object);
     }
 
+    /** Add an object to the grid. Will create chunks if none were found in the location. */
     public void add(float[] vertices, Object object)
     {
         createChunks(vertices);
@@ -261,6 +263,7 @@ public class Grid
         return chunk;
     }
 
+    /** Query the grid for chunks overlapping the point. */
     public Array<Chunk> getChunks(float x, float y)
     {
         chunkRetriever.clear();
@@ -283,6 +286,7 @@ public class Grid
         return chunkRetriever;
     }
 
+    /** Query the grid for chunks overlapping the polygon. */
     public Array<Chunk> getChunks(float[] vertices)
     {
         chunkRetriever.clear();
@@ -314,6 +318,7 @@ public class Grid
         return chunkRetriever;
     }
 
+    /** Checks the bounds of all neighboring chunks and adds them to chunkRetriever if collision is made. */
     private void retrieveNeighborChunks(float chunkX, float chunkY, float x, float y)
     {
         retrieveNeighborChunk(chunkX - 1, chunkY, x, y);
@@ -338,6 +343,7 @@ public class Grid
         }
     }
 
+    /** Checks the bounds of all neighboring chunks and adds them to chunkRetriever if collision is made. */
     private void retrieveNeighborChunks(Chunk chunk, float[] vertices)
     {
         retrieveNeighborChunk(chunk.x - 1, chunk.y, vertices);
@@ -361,12 +367,4 @@ public class Grid
             chunk.touched = true;
         }
     }
-
-//    private void insertChunk(int index, Chunk chunk)
-//    {
-//        if (index > chunks.size + 1) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + chunks.size);
-//        if (index < 0) throw new IndexOutOfBoundsException("index can't be < 0: " + index + " < " + 0);
-//
-//        if(index > chunks.size)
-//    }
 }

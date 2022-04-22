@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.ObjectSet;
 
 public class Chunk
 {
-    int index;
     float x, y; // middle of chunk
     boolean touched; // ignore as a neighbor if true
     private ObjectSet objects;
