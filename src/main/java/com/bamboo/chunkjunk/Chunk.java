@@ -31,6 +31,11 @@ public class Chunk
         objects.add(object);
     }
 
+    public void remove(Object object)
+    {
+        objects.remove(object);
+    }
+
     public boolean contains(float x, float y)
     {
         float halfSize = grid.halfChunkSize + grid.halfChunkOvershoot;
