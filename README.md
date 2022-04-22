@@ -26,7 +26,7 @@ Add this in your root build.gradle at the end of repositories:
 Then add the dependency
 
 `dependencies {
-	        implementation 'com.github.BambooBandit:ChunkJunk:6884772eb6'
+	        implementation 'com.github.BambooBandit:ChunkJunk:2395d5cdf4'
 }`
 
 Now you should be good to go.
