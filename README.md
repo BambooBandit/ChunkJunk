@@ -22,13 +22,13 @@ Now you can add whatever objects you want to the grid by giving it either a poin
 
 `grid.add(x, y, object);`
 
-`grid.add(new float[]{0,0, 1, 1, 1, 0}, object);`
+`grid.add(new float[]{0, 0, 1, 1, 1, 0}, object);`
 
 And query the grid for the chunks by giving it either a point or polygon. Keep in mind that grid.getChunks returns a reusable array to prevent garbage creation, so work with it as soon as you call it and don't hold on to it.
 
 `Array<Chunk> chunks = grid.getChunks(x, y);`
 
-`Array<Chunk> chunks = grid.getChunks(new float[]{0,0, 1, 1, 1, 0});`
+`Array<Chunk> chunks = grid.getChunks(new float[]{0, 0, 1, 1, 1, 0});`
 
 And that's pretty much it!
 
