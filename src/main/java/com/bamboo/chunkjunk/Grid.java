@@ -11,6 +11,7 @@ public class Grid
     float chunkSize;
     float halfChunkSize;
     float chunkOvershoot;
+    float halfChunkOvershoot;
     int columnCount;
     int rowCount;
     private static Array<Chunk> chunkRetriever = new Array<>(9);
@@ -36,6 +37,7 @@ public class Grid
     private void init()
     {
         this.halfChunkSize = chunkSize / 2f;
+        this.halfChunkOvershoot = chunkOvershoot / 2f;
 
         for(int y = 0; y < rowCount; y ++)
         {

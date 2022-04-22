@@ -33,7 +33,7 @@ public class ChunkJunkDemo extends ApplicationAdapter
 		verts = new FloatArray();
 		junk = new Array<>();
 
-		grid = new Grid(3, 3, 100);
+		grid = new Grid(3, 3, 100, 25);
 
 		camera.position.x -= (camera.viewportWidth / 2f) - (grid.columnCount * grid.chunkSize) / 2f;
 		camera.position.y -= (camera.viewportHeight / 2f) - (grid.rowCount * grid.chunkSize) / 2f;
@@ -99,16 +99,16 @@ public class ChunkJunkDemo extends ApplicationAdapter
 		for(int i = 0; i < grid.chunks.size; i ++)
 		{
 			Chunk chunk = grid.chunks.get(i);
-			shapeRenderer.rect(chunk.x - grid.halfChunkSize, chunk.y - grid.halfChunkSize, grid.chunkSize, grid.chunkSize);
+			shapeRenderer.rect(chunk.x - grid.halfChunkSize - grid.halfChunkOvershoot, chunk.y - grid.halfChunkSize - grid.halfChunkOvershoot, grid.chunkSize + grid.chunkOvershoot, grid.chunkSize + grid.chunkOvershoot);
 		}
 
-		shapeRenderer.setColor(0, 1, 0, .25f);
+		shapeRenderer.setColor(0, 1, 0, 1f);
 		shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
 		Array<Chunk> chunks = grid.getChunks(unprojector.x, unprojector.y);
 		for(int i = 0; i < chunks.size; i ++)
 		{
 			Chunk chunk = chunks.get(i);
-			shapeRenderer.rect(chunk.x - grid.halfChunkSize, chunk.y - grid.halfChunkSize, grid.chunkSize, grid.chunkSize);
+			shapeRenderer.rect(chunk.x - grid.halfChunkSize - grid.halfChunkOvershoot, chunk.y - grid.halfChunkSize - grid.halfChunkOvershoot, grid.chunkSize + grid.chunkOvershoot, grid.chunkSize + grid.chunkOvershoot);
 		}
 
 		shapeRenderer.setColor(Color.WHITE);
@@ -117,6 +117,14 @@ public class ChunkJunkDemo extends ApplicationAdapter
 		{
 			Chunk chunk = grid.chunks.get(i);
 			shapeRenderer.rect(chunk.x - grid.halfChunkSize, chunk.y - grid.halfChunkSize, grid.chunkSize, grid.chunkSize);
+		}
+
+		shapeRenderer.setColor(Color.GRAY);
+		shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+		for(int i = 0; i < grid.chunks.size; i ++)
+		{
+			Chunk chunk = grid.chunks.get(i);
+			shapeRenderer.rect(chunk.x - grid.halfChunkSize - grid.halfChunkOvershoot, chunk.y - grid.halfChunkSize - grid.halfChunkOvershoot, grid.chunkSize + grid.chunkOvershoot, grid.chunkSize + grid.chunkOvershoot);
 		}
 
 		shapeRenderer.setColor(Color.BLUE);

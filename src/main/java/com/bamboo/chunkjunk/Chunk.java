@@ -17,7 +17,7 @@ public class Chunk
         this.grid = grid;
         this.x = x;
         this.y = y;
-        float halfSize = (grid.chunkSize + grid.chunkOvershoot) / 2f;
+        float halfSize = grid.halfChunkSize + grid.halfChunkOvershoot;
         this.vertices = new float[]{x - halfSize, y - halfSize, x - halfSize, y + halfSize, x + halfSize, y + halfSize, x + halfSize, y - halfSize};
     }
 
@@ -33,7 +33,7 @@ public class Chunk
 
     public boolean contains(float x, float y)
     {
-        float halfSize = (grid.chunkSize + grid.chunkOvershoot) / 2f;
+        float halfSize = grid.halfChunkSize + grid.halfChunkOvershoot;
         return x >= this.x - halfSize && x <= this.x + halfSize && y >= this.y - halfSize && y <= this.y + halfSize;
     }
 
