@@ -66,8 +66,8 @@ public class Grid
     /** Add an object to the grid. Will create chunks if none were found in the location. */
     public void add(float[] vertices, Object object)
     {
-        Array<Chunk> chunks = getChunks(vertices);
         createChunks(vertices);
+        Array<Chunk> chunks = getChunks(vertices);
         add(chunks, object);
     }
 
@@ -192,15 +192,22 @@ public class Grid
 
     private void createChunks(float[] vertices)
     {
+        polygon.setVertices(vertices);
+        Rectangle rectangle = polygon.getBoundingRectangle();
+
+        if(chunks.size == 0)
+        {
+            createChunks(rectangle.x, rectangle.y);
+            createChunks(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
+            return;
+        }
+
         Chunk firstChunk = chunks.get(0);
         Chunk lastChunk = chunks.get(chunks.size - 1);
         float leftX = firstChunk.x - halfChunkSize;
         float rightX = lastChunk.x + halfChunkSize;
         float bottomY = firstChunk.y - halfChunkSize;
         float topY = lastChunk.y + halfChunkSize;
-
-        polygon.setVertices(vertices);
-        Rectangle rectangle = polygon.getBoundingRectangle();
 
         if(rectangle.x < leftX)
         {
